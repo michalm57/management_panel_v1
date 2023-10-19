@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  # MySQL service
+  mysql:
+    image: mysql:latest
+    container_name: mysql_management_panel
+    environment:
+      MYSQL_DATABASE: management_panel_v1
+      MYSQL_USER: management_panel_v1_user
+      MYSQL_PASSWORD: management_panel_v1_user_password
+      MYSQL_ROOT_PASSWORD: root_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  # phpMyAdmin service
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: phpmyadmin_management_panel
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: root_password
+    ports:
+      - "8080:80"
+    depends_on:
+      - mysql
+
+volumes:
+  mysql_data:
